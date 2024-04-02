@@ -1,0 +1,16 @@
+{
+  "name": "joa",
+  "version": "0.0.0",
+  "description": "JavaScript object notation for Web API",
+  "main": "./src/index.js",
+  "scripts": {
+    "test": "vitest"
+  },
+  "keywords": [],
+  "author": "Xvezda <xvezda@naver.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.4.3",
+    "vitest": "^1.4.0"
+  }
+}
