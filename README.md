@@ -15,10 +15,12 @@ It's a specification and also a library designed to express values that cannot b
 ```
 
 ```ts
-import jowa from 'jowa';
+import { fromSchema } from 'jowa';
 
 const greetSchema = await fetch('/api/patterns/greet').then(r => r.json());
-const greetRegex = jowa.apply(greetSchema);
+const greetRegex = fromSchema(greetSchema);
+
+console.log(greetRegex instanceof RegExp);  // true
 
 const [, userName] = 'Hello, Xvezda!'.match(greetRegex);
 
