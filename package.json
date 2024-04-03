@@ -4,7 +4,7 @@
   "description": "JavaScript object notation for Web API",
   "main": "./src/index.js",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest --typecheck"
   },
   "keywords": [],
   "author": "Xvezda <xvezda@naver.com>",
