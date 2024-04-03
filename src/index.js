@@ -1,6 +1,6 @@
 /**
  * @typedef {{
- *   ctor: string;
+ *   type: string;
  *   args: (Schema | any)[];
  * }} Schema
  */
@@ -15,7 +15,7 @@
  * @param {any} s
  * @returns {s is Schema}
  */
-export const isSchema = (s) => s && typeof s === 'object' && typeof s.ctor === 'string' && Array.isArray(s.args)
+export const isSchema = (s) => s && typeof s === 'object' && typeof s.type === 'string' && Array.isArray(s.args)
 
 /**
  * @param {Schema} schema
@@ -24,8 +24,8 @@ export const isSchema = (s) => s && typeof s === 'object' && typeof s.ctor === '
  * @throws {Error}
  */
 export function fromSchema (schema, context = globalThis) {
-  const type = context[schema.ctor]
-  if (typeof type !== 'function') throw new Error(`Unknown type: ${schema.ctor}`)
+  const type = context[schema.type]
+  if (typeof type !== 'function') throw new Error(`Unknown type: ${schema.type}`)
 
   const result = type.apply(null, schema.args.map(s => {
     if (isSchema(s)) {
@@ -54,28 +54,28 @@ export function toSchema (value) {
 
   if (typeof value === 'number') {
     return {
-      ctor: 'Number',
+      type: 'Number',
       args: [value]
     }
   }
 
   if (typeof value === 'string') {
     return {
-      ctor: 'String',
+      type: 'String',
       args: [value]
     }
   }
 
   if (typeof value === 'boolean') {
     return {
-      ctor: 'Boolean',
+      type: 'Boolean',
       args: [value]
     }
   }
 
   if (value instanceof RegExp) {
     return {
-      ctor: 'RegExp',
+      type: 'RegExp',
       args: [
         value.source,
         value.flags
@@ -85,7 +85,7 @@ export function toSchema (value) {
 
   if (Array.isArray(value)) {
     return {
-      ctor: 'Array',
+      type: 'Array',
       args: value.map(toSchema)
     }
   }
@@ -102,7 +102,7 @@ export function toSchema (value) {
     }
 
     return {
-      ctor: 'Object',
+      type: 'Object',
       args: [args]
     }
   }

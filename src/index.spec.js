@@ -3,17 +3,17 @@ import { fromSchema, toSchema } from '.'
 
 describe('fromSchema', () => {
   test('string from schema', async () => {
-    expect(fromSchema({ ctor: 'String', args: ['foo'] })).toEqual('foo')
+    expect(fromSchema({ type: 'String', args: ['foo'] })).toEqual('foo')
   })
 
   test('number from schema', async () => {
-    expect(fromSchema({ ctor: 'Number', args: [1] })).toEqual(1)
-    expect(fromSchema({ ctor: 'Number', args: ['42'] })).toEqual(42)
+    expect(fromSchema({ type: 'Number', args: [1] })).toEqual(1)
+    expect(fromSchema({ type: 'Number', args: ['42'] })).toEqual(42)
   })
 
   test('regex from schema', async () => {
     const result = fromSchema({
-      ctor: 'RegExp',
+      type: 'RegExp',
       args: ['hello (\\w+)', 'i']
     })
 
@@ -22,18 +22,18 @@ describe('fromSchema', () => {
 
   test('can be escaped', async () => {
     const escaped = {
-      ctor: 'Object',
+      type: 'Object',
       args: [
         {
-          ctor: {
-            ctor: 'String',
+          type: {
+            type: 'String',
             args: ['String']
           },
           args: {
-            ctor: 'Array',
+            type: 'Array',
             args: [
               {
-                ctor: 'String',
+                type: 'String',
                 args: ['Escaped!']
               }
             ]
@@ -43,7 +43,7 @@ describe('fromSchema', () => {
     }
 
     expect(fromSchema(escaped)).toMatchObject({
-      ctor: 'String',
+      type: 'String',
       args: ['Escaped!']
     })
   })
@@ -51,41 +51,41 @@ describe('fromSchema', () => {
 
 describe('toSchema', () => {
   test('number to schema', async () => {
-    expect(toSchema(42)).toEqual({ ctor: 'Number', args: [42] })
+    expect(toSchema(42)).toEqual({ type: 'Number', args: [42] })
   })
 
   test('string to schema', async () => {
-    expect(toSchema('foo')).toEqual({ ctor: 'String', args: ['foo'] })
+    expect(toSchema('foo')).toEqual({ type: 'String', args: ['foo'] })
   })
 
   test('regex to schema', async () => {
     const result = toSchema(/hello (\w+)/i)
 
     expect(result).toEqual({
-      ctor: 'RegExp',
+      type: 'RegExp',
       args: ['hello (\\w+)', 'i']
     })
   })
 
   test('can be escaped', async () => {
     const escaped = {
-      ctor: 'String',
+      type: 'String',
       args: ['Escaped!']
     }
 
     expect(toSchema(escaped)).toEqual({
-      ctor: 'Object',
+      type: 'Object',
       args: [
         {
-          ctor: {
-            ctor: 'String',
+          type: {
+            type: 'String',
             args: ['String']
           },
           args: {
-            ctor: 'Array',
+            type: 'Array',
             args: [
               {
-                ctor: 'String',
+                type: 'String',
                 args: ['Escaped!']
               }
             ]
@@ -101,7 +101,7 @@ test('combined', async () => {
     foo: { bar: 'baz' },
     fizz: [1, 2, 'buzz'],
     hello: /^world$/gi,
-    escapeMe: { ctor: 'String', args: ['Escaped!'] },
+    escapeMe: { type: 'String', args: ['Escaped!'] },
     flag: true,
     empty: null
   }
@@ -120,5 +120,5 @@ test('customizability', async () => {
       return args[0].charAt(0).toUpperCase().concat(args.substring(1))
     }
   }
-  expect(fromSchema({ ctor: 'Title', args: ['hello'] }, context)).toEqual('Hello')
+  expect(fromSchema({ type: 'Title', args: ['hello'] }, context)).toEqual('Hello')
 })
