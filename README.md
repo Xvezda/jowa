@@ -9,8 +9,8 @@ It's a specification and also a library designed to express values that cannot b
 `/api/patterns/greet`
 ```json
 {
-  "ctor": "RegExp",
-  "args": ["hello,? (\\w+)", "ig"]
+  "type": "RegExp",
+  "args": ["hello,? (\\w+)", "i"]
 }
 ```
 
